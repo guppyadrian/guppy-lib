@@ -79,7 +79,7 @@ export class Canvas {
 
     // TODO: if no name is given, just repeat last pattern
     static drawPattern(x: number, y: number, w: number, h: number, name: string) {
-        const pattern = Canvas.getPattern('metal-block');
+        const pattern = Canvas.getPattern(name);
         pattern.setTransform(new DOMMatrix().translate(Canvas.width / 2, Canvas.height / 2).scale(Camera.z).translate(x - Camera.x, y - Camera.y));
         Canvas.ctx.fillStyle = pattern;
         this.drawRect(x, y, w, h);
