@@ -1,0 +1,19 @@
+{
+  "name": "guppy-lib",
+  "version": "2.6.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Adrian Nelson",
+  "license": "ISC",
+  "type": "module",
+  "description": "library for making my games",
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
