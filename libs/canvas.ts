@@ -7,7 +7,6 @@ export class Canvas {
     static initialized = false;
 
     static patterns = new Map<string, CanvasPattern>();
-    static patternTransformed = new Map<string, boolean>();
     
     static initialize(canvas: HTMLCanvasElement) {
         if (Canvas.initialized) return;
@@ -93,10 +92,8 @@ export class Canvas {
     static drawPattern(x: number, y: number, w: number, h: number, name: string) {
         const pattern = Canvas.getPattern(name);
 
-        if (!Canvas.patternTransformed.get(name)) {
-            //pattern.setTransform(new DOMMatrix().translate(Canvas.width / 2, Canvas.height / 2).scale(Camera.z).translate(x - Camera.x, y - Camera.y));
-            Canvas.patternTransformed.set(name, true);
-        }
+        pattern.setTransform(new DOMMatrix().translate(Canvas.width / 2, Canvas.height / 2).scale(Camera.z).translate(x - Camera.x, y - Camera.y));
+        
         Canvas.ctx.fillStyle = pattern;
 
         this.drawRect(x, y, w, h);
@@ -120,6 +117,5 @@ export class Canvas {
 
     static clear() {
         Canvas.ctx.clearRect(0, 0, Canvas.width, Canvas.height);
-        Canvas.patternTransformed.forEach((_, key) => Canvas.patternTransformed.set(key, false));
     }
 }
