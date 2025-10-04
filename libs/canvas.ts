@@ -7,6 +7,7 @@ export class Canvas {
     static initialized = false;
 
     static patterns = new Map<string, CanvasPattern>();
+    static patternTransformed = new Map<string, boolean>();
     
     static initialize(canvas: HTMLCanvasElement) {
         if (Canvas.initialized) return;
@@ -63,17 +64,24 @@ export class Canvas {
     static fullscreen() {
         Canvas.width = window.innerWidth;
         Canvas.height = window.innerHeight;
+        Canvas.ctx.imageSmoothingEnabled = false;
     }
 
     static draw(image: HTMLImageElement, x: number, y: number, scale: number = 1, rotation: number = 0) {
         // TODO: implement rotation
-        const totalScale = scale * Camera.z;
+        const screenPos = Camera.toScreen(x, y);
+        const sizeX = image.width * scale * Camera.z;
+        const sizeY = image.height * scale * Camera.z;
+
+        if (screenPos.x > Canvas.width) return;
+        if (screenPos.y > Canvas.height) return;
+
         Canvas.ctx.drawImage(
             image,
-            x,
-            y,
-            image.width * totalScale,
-            image.height * totalScale,
+            screenPos.x,
+            screenPos.y,
+            sizeX,
+            sizeY,
         );
     }
 
@@ -84,19 +92,24 @@ export class Canvas {
     // TODO: if no name is given, just repeat last pattern
     static drawPattern(x: number, y: number, w: number, h: number, name: string) {
         const pattern = Canvas.getPattern(name);
-        pattern.setTransform(new DOMMatrix().translate(Canvas.width / 2, Canvas.height / 2).scale(Camera.z).translate(x - Camera.x, y - Camera.y));
+
+        if (!Canvas.patternTransformed.get(name)) {
+            //pattern.setTransform(new DOMMatrix().translate(Canvas.width / 2, Canvas.height / 2).scale(Camera.z).translate(x - Camera.x, y - Camera.y));
+            Canvas.patternTransformed.set(name, true);
+        }
         Canvas.ctx.fillStyle = pattern;
+
         this.drawRect(x, y, w, h);
     }
 
     static drawRect(x: number, y: number, w: number, h: number) {
-        Canvas.ctx.imageSmoothingEnabled = false;
+        //Canvas.ctx.imageSmoothingEnabled = false;
         const screenPos = Camera.toScreen(x, y);
         Canvas.ctx.fillRect(
-            Math.floor(screenPos.x),
-            Math.floor(screenPos.y),
-            Math.ceil(w * Camera.z),
-            Math.ceil(h * Camera.z),
+            screenPos.x,
+            screenPos.y,
+            w * Camera.z,
+            h * Camera.z,
         )
     }
 
@@ -107,5 +120,6 @@ export class Canvas {
 
     static clear() {
         Canvas.ctx.clearRect(0, 0, Canvas.width, Canvas.height);
+        Canvas.patternTransformed.forEach((_, key) => Canvas.patternTransformed.set(key, false));
     }
 }

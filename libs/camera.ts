@@ -38,7 +38,10 @@ export class Camera {
             throw new Error("Invalid arguments");
         }
 
-        return new Vector2((pos.x - Camera.x) * Camera.z + Canvas.width / 2, (pos.y - Camera.y) * Camera.z + Canvas.height / 2);
+        return new Vector2(
+            Math.round((pos.x - Camera.x) * Camera.z + Canvas.width / 2),
+            Math.round((pos.y - Camera.y) * Camera.z + Canvas.height / 2),
+        );
 
     }
 }

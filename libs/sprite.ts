@@ -1,7 +1,7 @@
 import { Assets } from "./assets.js";
-import { Master } from "./master.js";
 import { Vector2 } from "./vector2.js";
 import { Area } from './area.js';
+import { Canvas } from "./canvas.js";
 
 export class Sprite extends Area {
     vel;
@@ -51,6 +51,6 @@ export class Sprite extends Area {
     }
 
     draw() {
-        Master.draw(this.image, this.x, this.y);
+        Canvas.draw(this.image, this.x, this.y);
     }
 }

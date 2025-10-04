@@ -1,5 +1,5 @@
 export class Assets {
-    private static readonly lib = new Map<string, HTMLImageElement>();
+    static readonly lib = new Map<string, HTMLImageElement>();
 
     static get(name: string) {
         if (!Assets.has(name)) {
