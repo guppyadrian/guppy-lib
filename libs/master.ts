@@ -7,6 +7,13 @@ export class Master {
     static currentScene: Scene;
     static canvas = Canvas;
 
+    // stuff for ticks
+    static lastTick: number;
+    static tickTime: number;
+    static tickAcc: number = 0; // accumulates ms and if > (1000 / tps) then run a tick
+    static tps: number;
+    static started = false;
+
     // TODO: make error checking for these stuff
     static get width() {
         return this.canvas.width; // TODO: make sure this is still accurate with zoom (probably not???)
@@ -15,10 +22,11 @@ export class Master {
         return this.canvas.height;
     }
 
-    static initialize(canvas: HTMLCanvasElement) {
+    static initialize(canvas: HTMLCanvasElement, tps: number) {
         if (Master.initialized) return;
         Master.initialized = true;
 
+        Master.tickTime = 1000 / tps;
         Master.canvas.initialize(canvas);
     }
 
@@ -36,14 +44,34 @@ export class Master {
         Master.canvas.draw(image, drawPos.x, drawPos.y, 1, 0);
     }
 
+    static start() {
+        requestAnimationFrame(Master.tick);
+    }
+
     static update() {
         Master.currentScene.update();
     }
 
     // a combined update/draw
-    static tick() {
-        Master.update();
+    static tick(timestamp: number) {
+        if (!Master.started) {
+            Master.started = true;
+            Master.lastTick = timestamp;
+            requestAnimationFrame(Master.tick);
+            return;
+        }
+
+        Master.tickAcc += timestamp - Master.lastTick;
+        Master.lastTick = timestamp;
+        const ticks = Math.floor(Master.tickAcc / Master.tickTime);
+        Master.tickAcc = Master.tickAcc % Master.tickTime;
+
+        for (let i = 0; i < ticks; i++) {
+            Master.update();
+        }
         Master.canvas.clear();
         Master.currentScene.draw();
+
+        requestAnimationFrame(Master.tick);
     }
 }

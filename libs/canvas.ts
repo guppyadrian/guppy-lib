@@ -65,16 +65,20 @@ export class Canvas {
         Canvas.height = window.innerHeight;
     }
 
-    static draw(image: HTMLImageElement, x: number, y: number, scale: number, rotation: number) {
+    static draw(image: HTMLImageElement, x: number, y: number, scale: number = 1, rotation: number = 0) {
         // TODO: implement rotation
         const totalScale = scale * Camera.z;
         Canvas.ctx.drawImage(
             image,
             x,
             y,
-            Math.ceil(image.width * totalScale),
-            Math.ceil(image.height * totalScale),
+            image.width * totalScale,
+            image.height * totalScale,
         );
+    }
+
+    static setAlpha(alpha = 1) {
+        Canvas.ctx.globalAlpha = alpha;
     }
 
     // TODO: if no name is given, just repeat last pattern
@@ -89,8 +93,8 @@ export class Canvas {
         Canvas.ctx.imageSmoothingEnabled = false;
         const screenPos = Camera.toScreen(x, y);
         Canvas.ctx.fillRect(
-            screenPos.x,
-            screenPos.y,
+            Math.floor(screenPos.x),
+            Math.floor(screenPos.y),
             Math.ceil(w * Camera.z),
             Math.ceil(h * Camera.z),
         )

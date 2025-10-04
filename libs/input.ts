@@ -26,4 +26,23 @@ export class Input {
         }
         return false;
     }
+
+    static justGet(name: string) {
+        const inputs = Input.keyBinds.get(name);
+        if (!inputs) return false;
+
+        for (const key of inputs) {
+            if (Keyboard.isJustDown(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Used for justPressed
+     */
+    static update() {
+        Keyboard.update();
+    }
 }

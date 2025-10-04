@@ -8,6 +8,10 @@ export class Vector2 {
     static get zero() {
         return new this(0, 0);
     }
+
+    static add(vec1: Vector2, vec2: Vector2) {
+        return new Vector2(vec1.x + vec2.x, vec1.y + vec2.y);
+    }
     
     /**
      * Add's another vector to this vector

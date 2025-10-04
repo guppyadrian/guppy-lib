@@ -5,7 +5,7 @@ import { Area } from './area.js';
 
 export class Sprite extends Area {
     vel;
-    readonly image;
+    image;
 
     get vx() {
         return this.vel.x;
