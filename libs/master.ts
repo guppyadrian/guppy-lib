@@ -2,6 +2,8 @@ import { Camera } from "./camera.js";
 import { Canvas } from "./canvas.js";
 import type { Scene } from "./scene.js";
 
+//let ticker = 0;
+
 export class Master {
     static initialized = false;
     static currentScene: Scene;
@@ -54,12 +56,18 @@ export class Master {
 
     // a combined update/draw
     static tick(timestamp: number) {
+
         if (!Master.started) {
             Master.started = true;
             Master.lastTick = timestamp;
             requestAnimationFrame(Master.tick);
             return;
         }
+
+        // if (++ticker % 1 !== 0) {
+        //     requestAnimationFrame(Master.tick);
+        //     return;
+        // }
 
         Master.tickAcc += timestamp - Master.lastTick;
         Master.lastTick = timestamp;

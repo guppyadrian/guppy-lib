@@ -38,6 +38,13 @@ export class Keyboard {
         return !Keyboard.keys.get(key);
     }
 
+    static reset() {
+        for (const key of Keyboard.keys.keys()) {
+            Keyboard.keys.set(key, false);
+            Keyboard.keysJustPressed.set(key, false);
+        }
+    }
+
     static update() {
         
     }

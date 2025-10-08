@@ -39,6 +39,11 @@ export class Input {
         return false;
     }
 
+    static reset() {
+        console.log("hi")
+        Keyboard.reset();
+    }
+
     /**
      * Used for justPressed
      */
