@@ -40,7 +40,6 @@ export class Input {
     }
 
     static reset() {
-        console.log("hi")
         Keyboard.reset();
     }
 
