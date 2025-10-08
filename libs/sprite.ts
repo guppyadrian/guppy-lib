@@ -21,10 +21,6 @@ export class Sprite extends Area {
         this.vel.y = y;
     }
 
-    get center() {
-        return new Vector2(this.x + this.width / 2, this.y + this.height / 2);
-    }
-
     static from(filePath: string, x = 0, y = 0) {
         return new this(Assets.get(filePath), x, y);
     }

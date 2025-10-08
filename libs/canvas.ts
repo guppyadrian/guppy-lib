@@ -110,8 +110,15 @@ export class Canvas {
         )
     }
 
-    static drawText() {
-        // TODO: implement
+    static setFillStyle(style: string | CanvasPattern | CanvasGradient) {
+        Canvas.ctx.fillStyle = style;
+    }
+
+    static drawText(text: string, x: number, y: number, size = 12) {
+        const screenPos = Camera.toScreen(x, y);
+        Canvas.ctx.font = `${size * Camera.z}px Arial`;
+
+        Canvas.ctx.fillText(text, screenPos.x, screenPos.y);
     }
     // TODO: Store ctx patterns
 

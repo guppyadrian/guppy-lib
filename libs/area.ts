@@ -32,6 +32,10 @@ export class Area {
         this.size.y = h;
     }
 
+    get center() {
+        return new Vector2(this.x + this.width / 2, this.y + this.height / 2);
+    }
+
     get top() { return this.y; }
     get bottom() { return this.y + this.height; }
     get left() { return this.x; }
