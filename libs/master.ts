@@ -13,7 +13,9 @@ export class Master {
     static lastTick: number;
     static tickTime: number;
     static tickAcc: number = 0; // accumulates ms and if > (1000 / tps) then run a tick
-    static tps: number;
+    //static tps: number;
+    static drawTime: number | undefined;
+    static drawAcc: number = 0;
     static started = false;
 
     // TODO: make error checking for these stuff
@@ -70,6 +72,7 @@ export class Master {
         // }
 
         Master.tickAcc += timestamp - Master.lastTick;
+        Master.drawAcc += timestamp - Master.lastTick;
         Master.lastTick = timestamp;
         const ticks = Math.floor(Master.tickAcc / Master.tickTime);
         Master.tickAcc = Master.tickAcc % Master.tickTime;
@@ -77,8 +80,15 @@ export class Master {
         for (let i = 0; i < ticks; i++) {
             Master.update();
         }
-        Master.canvas.clear();
-        Master.currentScene.draw();
+
+        if (!Master.drawTime) { // if this is undefined, fps is synced with refresh rate
+            Master.canvas.clear();
+            Master.currentScene.draw();
+        } else if (Master.drawAcc >= Master.drawTime) { // use fixed fps
+            Master.canvas.clear();
+            Master.currentScene.draw();
+            Master.drawAcc = Master.drawAcc % Master.drawTime;
+        }
 
         requestAnimationFrame(Master.tick);
     }
