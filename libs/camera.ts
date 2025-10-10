@@ -44,6 +44,16 @@ export class Camera {
         );
 
     }
+
+    // (X - C) * Z + W = A
+    // X = (A - W) / Z + C
+
+    static toWorld(pos: Vector2) {
+        return new Vector2(
+            (pos.x - Canvas.width / 2) / Camera.z + Camera.x,
+            (pos.y - Canvas.height / 2) / Camera.z + Camera.y,
+        )
+    }
 }
 
 // camera pos should be set
