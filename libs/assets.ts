@@ -15,7 +15,7 @@ export class Assets {
     }
 
     static load(filePath: string, name: string) {
-        if (Assets.has(name)) return;
+        if (Assets.has(name)) return Promise.resolve();
 
         const image = new Image();
         image.src = filePath;
