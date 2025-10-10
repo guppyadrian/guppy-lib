@@ -53,4 +53,11 @@ export class Area {
         if (this.top >= otherArea.bottom) return false;
         return true;
     }
+    collidingPoint(point: Vector2) {
+        if (this.left >= point.x) return false;
+        if (this.right <= point.x) return false;
+        if (this.top >= point.y) return false;
+        if (this.bottom <= point.y) return false;
+        return true;
+    }
 }
