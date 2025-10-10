@@ -1,5 +1,6 @@
 import { Area } from "./area.js";
 import { Camera } from "./camera.js";
+import { Master } from "./master.js";
 import type { Button } from "./ui/button.js";
 import { Vector2 } from "./vector2.js";
 
@@ -7,7 +8,10 @@ export class Mouse {
     private static initialized = false;
     private static pressPos = Vector2.zero;
     private static pressed = false;
-    private static buttons: [Area, Function][] = [];
+
+    static get buttons() {
+        return Master.currentScene.buttons;
+    }
 
     static initialize() {
         if (Mouse.initialized) return;
@@ -36,7 +40,7 @@ export class Mouse {
             Mouse.pressed = false;
             const releasePos = new Vector2(e.clientX, e.clientY);
 
-            this.checkPresses(releasePos);
+            Mouse.checkPresses(releasePos);
         }
     }
 
@@ -46,9 +50,7 @@ export class Mouse {
 
     static checkPresses(releasePos: Vector2) {
         for (const btn of Mouse.buttons) {
-            const worldPos = Camera.toWorld(this.pressPos);
-
-            if (!btn[0].collidingPoint(worldPos)) continue;
+            if (!btn[0].collidingPoint(Mouse.pressPos)) continue;
 
             btn[1]();
         }
@@ -56,9 +58,5 @@ export class Mouse {
 
     static clearButtons() {
         Mouse.buttons.length = 0;
-    }
-
-    static addButton(area: Area, callback: Function) {
-        Mouse.buttons.push([area, callback]);
     }
 }
