@@ -61,8 +61,13 @@ export class Canvas {
     }
 
     static fullscreen() {
-        Canvas.width = window.innerWidth;
-        Canvas.height = window.innerHeight;
+        Canvas.changeResolution(window.innerWidth, window.innerHeight);
+    }
+
+    static changeResolution(x: number, y: number) {
+        Canvas.width = x;
+        Canvas.height = y;
+
         Canvas.ctx.imageSmoothingEnabled = false;
     }
 
