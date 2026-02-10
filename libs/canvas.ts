@@ -5,6 +5,7 @@ export class Canvas {
     static canvas: HTMLCanvasElement;
     static ctx: CanvasRenderingContext2D;
     static initialized = false;
+    static font = 'Arial';
 
     static patterns = new Map<string, CanvasPattern>();
     
@@ -121,7 +122,7 @@ export class Canvas {
 
     static drawText(text: string, x: number, y: number, size = 12) {
         const screenPos = Camera.toScreen(x, y);
-        Canvas.ctx.font = `${size * Camera.z}px Arial`;
+        Canvas.ctx.font = `${size * Camera.z}px ${Canvas.font}`;
 
         Canvas.ctx.fillText(text, screenPos.x, screenPos.y);
     }

@@ -18,11 +18,14 @@ export class Assets {
         if (Assets.has(name)) return Promise.resolve();
 
         const image = new Image();
-        image.src = filePath;
+
         Assets.lib.set(name || filePath, image); 
 
         return new Promise<void>((resolve, reject) => {
             image.onload = () => resolve();
+            image.onerror = () => reject();
+
+            image.src = filePath;
         });
     }
 }
