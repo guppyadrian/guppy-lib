@@ -8,6 +8,7 @@ export class Keyboard {
         Keyboard.initialized = true;
 
         window.addEventListener("keydown", e => {
+            if (e.key === "Tab") e.preventDefault();
             Keyboard.handleKey(e, true);
         });
         window.addEventListener("keyup", e => {
